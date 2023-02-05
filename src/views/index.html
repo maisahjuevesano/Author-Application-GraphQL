@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Author Application</title>
+    <script defer src="/js/global.js"></script>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+
+    <button class="listTheAuthors">Get All Authors</button>
+    <div class="allAuthorsContainer" id="author-selection"></div>
+    <!-- min form för Create Author -->
+    <div class="createAuthorContainer">
+        <form class="createAuthor" name="removeCreateInputs" action="#">
+            <h1 class="form__title">Create Author</h1>
+
+            <label for="fname">Firstname</label>
+            <input class="createInput" type="text" id="firstname" name="fname" required />
+
+            <label for="lname">Lastname</label>
+            <input class="createInput" type="text" id="lastname" name="lname" required />
+
+            <label for="year">Year</label>
+            <input class="createInput" type="text" id="year" required />
+
+            <label for="books">Books</label>
+            <input class="createInput" type="text" id="books" required />
+
+            <input class="form__button" type="submit" value="Create">
+        </form>
+    </div>
+
+    <div class="deleteAuthorContainer">
+        <!-- min form för Delete Author  -->
+        <form class="deleteAuthor" name="removeDeleteInputs" action="#">
+            <h1 class="form__title">Delete Author</h1>
+            <label for="id">Id</label>
+            <input class="deleteInput" type="text" id="idname" name="fname" required />
+
+            <input class="form__button" type="submit" value="Delete">
+        </form>
+
+    </div>
+
+
+    <!-- <script>
+
+        //query beskriver bara vår request, vad vi vill göra
+
+        const graphQLQuery = async (url, query, variables = {}) => { //url till servern där vi skapar vårt api. //parametern som måste heta såhär inom body.
+            const response = await fetch(url, {
+                method: "POST", //i method kommer alltid post, man gör aldrig en get request. Vi gör alltid ett post request till ett graphqlapi.
+                headers: {
+                    "Content-Type": "application/json",
+                },
+
+                body: JSON.stringify({
+                    query,
+                    variables,
+                }),
+            });
+
+            const res = await response.json();
+            return res.data;
+        };
+
+
+
+        const getAllAuthorsQuery = `query Query { getAllAuthors {
+                id
+                firstname
+                lastname
+                year
+                books
+            }
+        }`;
+
+        //För mutation
+        /*Vi skapar 
+        .skickar in ett js objekt som matchar - dollartecknet är framför det variabelnamn vi måste använda.
+        sen skickar vi med objektet som matchar med vårt schema.*/
+
+        const createAuthorQuery = `mutation CreateAuthor($input: CreateAuthurInput) {
+            createAuthor(input: $input) {
+                id
+                firstname
+                year
+                books
+                lastname
+            }
+        }`;
+
+        const deleteAllAuthorQuery = `mutation DeleteAuthor($authorId: ID!) {
+  deleteAuthor(authorId: $authorId) {
+    deletedId
+  }
+}`;
+
+
+        const listTheAuthors = document.querySelector(".listTheAuthors");
+        const authorContainer = document.querySelector("#author-selection");
+
+
+
+        let authors = [];
+        let author = [];
+
+
+        listTheAuthors.addEventListener('click', async (e) => {
+            e.preventDefault();
+            displayAuthor();
+
+        })
+
+        //här är jag
+        // kod tömma min delete input 
+
+
+
+
+
+        const formDelete = document.querySelector(".deleteAuthor");
+        formDelete.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+
+
+            const response = await graphQLQuery(
+                "http://localhost:5000/graphql",
+                deleteAllAuthorQuery, {
+
+                authorId: document.getElementById("idname").value
+
+            }
+
+            );
+
+
+
+            // let authorList = JSON.parse(localStorage.getItem("authorList") || "[]");
+            // const messagecontainer = document.createElement("p");
+            // messagecontainer.innerHTML = "Author was deleted!"
+            // authorContainer.appendChild(messagecontainer)
+            alert("Deleted success!")
+            window.location.reload();
+            displayAuthor();
+
+            console.log(response)
+
+            // authors = await response.getAllAuthors;
+            document.removeDeleteInputs.reset();
+
+
+        })
+
+
+        const formCreate = document.querySelector(".createAuthor");
+        formCreate.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+
+            const response = await graphQLQuery(
+                "http://localhost:5000/graphql",
+                createAuthorQuery,
+                {
+
+
+                    input: {
+                        firstname: document.getElementById("firstname").value,
+                        lastname: document.getElementById("lastname").value,
+                        books: document.getElementById("books").value,
+                        year: document.getElementById("year").value
+                    }
+                }
+            );
+
+            displayAuthor();
+            console.log(response)
+            document.removeCreateInputs.reset();
+
+            // authors = await response.getAllAuthors;
+
+
+        });
+
+
+        const displayAuthor = async () => {
+            authorContainer.innerHTML = ""
+
+            const response = await graphQLQuery(
+
+                "http://localhost:5000/graphql",
+                getAllAuthorsQuery
+
+            );
+
+            authors = await response.getAllAuthors;
+
+            const displayTitle = document.createElement("h1")
+            displayTitle.classList.add("title")
+            displayTitle.innerHTML = "All Authors";
+            authorContainer.appendChild(displayTitle);
+
+            authors.forEach((author) => {
+
+                const authorDiv = document.createElement("div")
+                authorDiv.classList.add("authorDiv")
+
+
+                const displayId = document.createElement("p");
+                const displayName = document.createElement("p");
+                const displayLastname = document.createElement("p");
+                const displayYear = document.createElement("p");
+                const displayBooks = document.createElement("p");
+
+
+                displayId.innerHTML = author.id;
+                displayName.innerText = author.firstname;
+                displayLastname.innerText = author.lastname;
+                displayYear.innerText = author.year;
+                displayBooks.innerText = author.books;
+
+                authorDiv.appendChild(displayId);
+                authorDiv.appendChild(displayName);
+                authorDiv.appendChild(displayLastname);
+                authorDiv.appendChild(displayYear);
+                authorDiv.appendChild(displayBooks);
+
+                authorContainer.appendChild(authorDiv);
+                localStorage.setItem("authorList", JSON.stringify(authors)); //Spara i LS 
+
+
+            });
+
+
+            console.log(authors);
+
+        };
+
+
+
+    </script> -->
+
+</body>
+
+</html>

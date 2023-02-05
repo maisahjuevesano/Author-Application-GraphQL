@@ -1,0 +1,35 @@
+type Author {
+	id: ID
+	firstname: String
+	lastname: String
+	year: String
+	books: String
+}
+
+type DeletedResourceResponse {
+	deletedId: ID
+	success: Boolean
+}
+
+type Query {
+	getAllAuthors: [Author] #Vi kommer få tillbaka en array av datatypen Author
+}
+
+type Mutation {
+	createAuthor(input: CreateAuthurInput): Author
+	deleteAuthor(authorId: ID!): DeletedResourceResponse
+}
+
+input CreateAuthurInput {
+	firstname: String!
+	lastname: String
+	year: String!
+	books: String
+}
+
+#! skriver man för att graphql kan kolla och det sparar tid
+#Varför behövde man inte ! på lastname
+
+# i mutation parameter så skriver vi inte id för jag vill generera ett id.
+#undivka errors så skippar petter !
+#shema har ingen koppling till dom andra filerna därför skapar man en ticket.js tex för att undvika stavfel & få hjälp av visual.

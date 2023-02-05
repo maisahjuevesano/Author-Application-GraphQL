@@ -1,0 +1,106 @@
+body {
+    display: flex;
+    flex-direction: column;
+    /* background-color: pink; */
+    background-image: url(./../assets/beachbook.jpg);
+    background-size: cover;
+    /* background-size: 75%; */
+    
+}
+
+
+
+.listTheAuthors{
+    display: flex;
+    margin-left: 39%;
+    background-color:  rgba(135, 89, 52, 0.632);
+    width: 80px;
+
+
+
+}
+
+/* .authorDiv{
+  
+    
+} */
+
+.allAuthorsContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* width: 50%; */
+    /* align-items: center; */
+    text-align: center;
+    
+}
+
+.CreateAuthorContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.deleteAuthorContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-content: center;
+    text-align: center;
+
+}
+
+.createAuthor {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* width: 50%; */
+    align-items: center;
+}
+
+.deleteAuthor{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* width: 50%; */
+    align-items: center;
+   
+}
+
+/*små saker*/ 
+
+h1{
+    color: rgb(193, 213, 236);
+    
+    /* color: rgba(193, 129, 45, 0.937); */
+}
+
+/* label{
+   color: rgba(160, 111, 72, 0.866);
+} */
+
+.form__button{
+    background-color:  rgba(135, 89, 52, 0.632);
+}
+
+@media screen and (min-width: 1024px){
+    .listTheAuthors{
+        margin-left: 46%;
+    
+    }
+
+    .allAuthorsContainer{
+        display: flex;
+        flex-direction: column;
+        margin-left: 27%;
+        text-align: center;
+        background-color:  rgba(135, 89, 52, 0.632);
+        width: 43%
+
+        
+        
+    }
+
+}
